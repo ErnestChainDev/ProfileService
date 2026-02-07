@@ -1,20 +1,31 @@
 from sqlalchemy.orm import Session
+from typing import Any
+
 from .models import UserProfile
 
 
 def get_profile(db: Session, user_id: int) -> UserProfile | None:
-    return db.query(UserProfile).filter(UserProfile.user_id == user_id).first()
+    return (
+        db.query(UserProfile)
+        .filter(UserProfile.user_id == user_id)
+        .first()
+    )
 
 
-def create_profile(db: Session, user_id: int, payload: dict) -> UserProfile:
-    p = UserProfile(user_id=user_id, **payload)
+def create_profile(db: Session, user_id: int, payload: dict[str, Any]) -> UserProfile:
+    p = UserProfile(user_id=user_id)
+
+    for field, value in payload.items():
+        if hasattr(p, field):
+            setattr(p, field, value)
+
     db.add(p)
     db.commit()
     db.refresh(p)
     return p
 
 
-def update_me(db: Session, user_id: int, payload: dict) -> UserProfile:
+def update_profile(db: Session, user_id: int, payload: dict[str, Any]) -> UserProfile:
     """
     Update ONLY the current user's profile.
     Fields not provided remain unchanged.
@@ -22,7 +33,6 @@ def update_me(db: Session, user_id: int, payload: dict) -> UserProfile:
     p = get_profile(db, user_id)
 
     if not p:
-        # If profile doesn't exist yet, create it
         return create_profile(db, user_id, payload)
 
     for field, value in payload.items():
@@ -34,19 +44,18 @@ def update_me(db: Session, user_id: int, payload: dict) -> UserProfile:
     return p
 
 
-def upsert_profile(db: Session, user_id: int, payload: dict) -> UserProfile:
+def upsert_profile(db: Session, user_id: int, payload: dict[str, Any]) -> UserProfile:
     """
-    Backward-compatible upsert (used by GET /me bootstrap).
+    Safe upsert used by GET /me bootstrap and PUT /me
     """
     p = get_profile(db, user_id)
 
     if not p:
-        p = UserProfile(user_id=user_id, **payload)
-        db.add(p)
-    else:
-        for field, value in payload.items():
-            if hasattr(p, field):
-                setattr(p, field, value)
+        return create_profile(db, user_id, payload)
+
+    for field, value in payload.items():
+        if hasattr(p, field):
+            setattr(p, field, value)
 
     db.commit()
     db.refresh(p)

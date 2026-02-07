@@ -4,9 +4,21 @@ class ProfileUpsertIn(BaseModel):
     full_name: str = Field(default="")
     year_level: str = Field(default="")
 
+    bio: str = Field(
+        default="",
+        description="Short personal bio / self-introduction",
+        max_length=300,
+    )
+
     # CBF inputs
-    interests: str = Field(default="", description="Comma-separated interests, e.g. 'programming, networking'")
-    career_goals: str = Field(default="", description="Career goal text, e.g. 'software developer, data analyst'")
+    interests: str = Field(
+        default="",
+        description="Comma-separated interests, e.g. 'programming, networking'",
+    )
+    career_goals: str = Field(
+        default="",
+        description="Career goal text, e.g. 'software developer, data analyst'",
+    )
     preferred_program: str = Field(
         default="",
         description="Optional target program: ComSci/IT/IS/BTVTED",
@@ -17,15 +29,18 @@ class ProfileUpsertIn(BaseModel):
         description="Comma-separated skills/keywords, e.g. 'python, sql, ui/ux'",
     )
 
-    # Existing
     notes: str = Field(default="")
+
 
 class ProfileOut(BaseModel):
     user_id: int
     full_name: str
     year_level: str
 
-    # CBF outputs / stored profile text
+    # 🆕 BIO
+    bio: str
+
+    # Stored profile text
     interests: str
     career_goals: str
     preferred_program: str
