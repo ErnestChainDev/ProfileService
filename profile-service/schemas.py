@@ -32,18 +32,17 @@ class ProfileUpsertIn(BaseModel):
     notes: str = Field(default="")
 
 
+class UserOut(BaseModel):
+    id: int
+    email: str
+
 class ProfileOut(BaseModel):
     user_id: int
     full_name: str
     year_level: str
-
-    # 🆕 BIO
     bio: str
-
-    # Stored profile text
     interests: str
     career_goals: str
     preferred_program: str
     skills: str
-
     notes: str
