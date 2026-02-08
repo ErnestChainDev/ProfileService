@@ -106,7 +106,9 @@ def build_router(SessionLocal):
         uid: int = Depends(current_user_id),
         db: Session = Depends(get_db),
     ):
-        p = upsert_profile(db, uid, payload.model_dump())
+        data = payload.model_dump(exclude_unset=True)
+
+        p = upsert_profile(db, uid, data)
         return ProfileOut(
             user_id=uid,
             full_name=p.full_name or "",

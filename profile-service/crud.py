@@ -1,3 +1,4 @@
+from typing import Any
 from sqlalchemy.orm import Session
 from .models import UserProfile
 
@@ -34,12 +35,7 @@ def update_me(db: Session, user_id: int, payload: dict) -> UserProfile:
     return p
 
 
-def upsert_profile(db: Session, user_id: int, payload: dict) -> UserProfile:
-    """
-    Safe upsert:
-    - Create profile if not exists
-    - Update only non-empty values
-    """
+def upsert_profile(db: Session, user_id: int, payload: dict[str, Any]) -> UserProfile:
     p = get_profile(db, user_id)
 
     if not p:
@@ -49,11 +45,11 @@ def upsert_profile(db: Session, user_id: int, payload: dict) -> UserProfile:
         for field, value in payload.items():
             if not hasattr(p, field):
                 continue
-
-            # ✅ skip empty strings / None
             if value is None:
                 continue
-            if isinstance(value, str) and value.strip() == "":
+
+            # ✅ allow empty for bio
+            if field != "bio" and isinstance(value, str) and value.strip() == "":
                 continue
 
             setattr(p, field, value)

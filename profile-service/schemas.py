@@ -1,35 +1,27 @@
+from typing import Optional
 from pydantic import BaseModel, Field
 
 class ProfileUpsertIn(BaseModel):
-    full_name: str = Field(default="")
-    year_level: str = Field(default="")
+    full_name: Optional[str] = None
+    year_level: Optional[str] = None
 
-    bio: str = Field(
-        default="",
+    bio: Optional[str] = Field(
+        default=None,
         description="Short personal bio / self-introduction",
         max_length=300,
     )
 
-    # CBF inputs
-    interests: str = Field(
-        default="",
-        description="Comma-separated interests, e.g. 'programming, networking'",
-    )
-    career_goals: str = Field(
-        default="",
-        description="Career goal text, e.g. 'software developer, data analyst'",
-    )
-    preferred_program: str = Field(
-        default="",
+    interests: Optional[str] = Field(default=None)
+    career_goals: Optional[str] = Field(default=None)
+
+    preferred_program: Optional[str] = Field(
+        default=None,
         description="Optional target program: ComSci/IT/IS/BTVTED",
         pattern=r"^(|ComSci|IT|IS|BTVTED)$",
     )
-    skills: str = Field(
-        default="",
-        description="Comma-separated skills/keywords, e.g. 'python, sql, ui/ux'",
-    )
 
-    notes: str = Field(default="")
+    skills: Optional[str] = Field(default=None)
+    notes: Optional[str] = Field(default=None)
 
 
 class UserOut(BaseModel):
