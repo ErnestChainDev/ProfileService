@@ -62,19 +62,7 @@ def build_router(SessionLocal):
         return uid
 
     def _ensure_profile(db: Session, user_id: int, payload: dict | None = None):
-        base = {
-            "full_name": "",
-            "year_level": "",
-            "bio": "",
-            "interests": "",
-            "career_goals": "",
-            "preferred_program": "",
-            "skills": "",
-            "notes": "",
-        }
-        if payload:
-            base.update(payload)
-        return upsert_profile(db, user_id, base)
+        return upsert_profile(db, user_id, payload or {})
 
     # -------------------------------------------------
     # PUBLIC: Get my profile (auto-create if missing)
