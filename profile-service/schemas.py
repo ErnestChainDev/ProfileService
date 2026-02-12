@@ -16,8 +16,8 @@ class ProfileUpsertIn(BaseModel):
 
     preferred_program: Optional[str] = Field(
         default=None,
-        description="Optional target program: ComSci/IT/IS/BTVTED",
-        pattern=r"^(|ComSci|IT|IS|BTVTED)$",
+        description="Optional target program: BSCS/BSIT/BSIS/BTVTED",
+        pattern=r"^(|BSCS|BSIT|BSIS|BTVTED)$",
     )
 
     skills: Optional[str] = Field(default=None)
