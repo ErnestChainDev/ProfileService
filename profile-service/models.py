@@ -25,7 +25,7 @@ class UserProfile(Base):
     career_goals: Mapped[str] = mapped_column(Text, default="")
     preferred_program: Mapped[str] = mapped_column(
         String(20), default=""
-    )  # ComSci/IT/IS/BTVTED or ""
+    )  # BSCS/BSIT/BSIS/BTVTED or ""
     skills: Mapped[str] = mapped_column(Text, default="")
 
     notes: Mapped[str] = mapped_column(Text, default="")
