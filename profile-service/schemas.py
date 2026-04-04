@@ -3,13 +3,7 @@ from pydantic import BaseModel, Field
 
 class ProfileUpsertIn(BaseModel):
     full_name: Optional[str] = None
-    year_level: Optional[str] = None
-
-    bio: Optional[str] = Field(
-        default=None,
-        description="Short personal bio / self-introduction",
-        max_length=300,
-    )
+    strand: Optional[str] = None
 
     interests: Optional[str] = Field(default=None)
     career_goals: Optional[str] = Field(default=None)
@@ -31,8 +25,7 @@ class UserOut(BaseModel):
 class ProfileOut(BaseModel):
     user_id: int
     full_name: str
-    year_level: str
-    bio: str
+    strand: str
     interests: str
     career_goals: str
     preferred_program: str

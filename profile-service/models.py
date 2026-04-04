@@ -12,14 +12,7 @@ class UserProfile(Base):
     user_id: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
 
     full_name: Mapped[str] = mapped_column(String(255), default="")
-    year_level: Mapped[str] = mapped_column(String(50), default="")
-
-    # 🆕 BIO
-    bio: Mapped[str] = mapped_column(
-        Text,
-        default="",
-        comment="Short personal bio / self introduction",
-    )
+    strand: Mapped[str] = mapped_column(String(50), default="")
 
     interests: Mapped[str] = mapped_column(Text, default="")
     career_goals: Mapped[str] = mapped_column(Text, default="")

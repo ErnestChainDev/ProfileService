@@ -60,12 +60,12 @@ def build_router(SessionLocal):
         if x_service_token != SERVICE_TOKEN:
             raise HTTPException(status_code=403, detail="Forbidden")
 
+    # ✅ UPDATED: year_level → strand
     def to_profile_out(user_id: int, p) -> ProfileOut:
         return ProfileOut(
             user_id=user_id,
             full_name=p.full_name or "",
-            year_level=p.year_level or "",
-            bio=p.bio or "",
+            strand=p.strand or "",
             interests=p.interests or "",
             career_goals=p.career_goals or "",
             preferred_program=p.preferred_program or "",
